@@ -13,7 +13,7 @@ Output should be in JSON format
 ### Language
 User choice
 
-Recommend Go or Python
+Recommend using the same language as Challenge1, Go, or Python
 
 ---
 ### Additional Resources
