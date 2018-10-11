@@ -1,4 +1,4 @@
-## Challenge1
+## Challenge2
 Using the [Star Wars API](https://www.swapi.co) for each film list the starships used in the films as well as the pilots of those star ships.
 Output should be in JSON format
 ---
