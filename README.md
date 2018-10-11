@@ -1,4 +1,4 @@
-## Challenge2
+## Challenge2 - Formatting Output
 
 Using the [Star Wars API](https://www.swapi.co) pick a film and list only the starships with pilots flown in the film as well as the pilots of those star ships.
 
