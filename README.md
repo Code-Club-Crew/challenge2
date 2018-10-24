@@ -1,5 +1,21 @@
 ## Challenge2 - Formatting Output and Data Types
 
+### Objectives
+
+The intent for this lesson is to build a more dynamic script that utilizes user input when ran. This added flexibility presents some challenges that we will need to overcome in the form of error handling and providing the user with helpful feedback.
+
+Data Types
+- Two very common data types are `dicts` and `lists`. You'll also see dicts with their `key:value` pairs where the `value` is actually a list itself. A `dict` of `lists`. Becoming familiar with this pattern will be very useful for manipulating industry standard outputs such as JSON.
+
+Loops
+- Mastering loops is integral to running scalable scripts. Becoming familiar with `for` and `while` loops will allow you to write scripts that iterate smartly.
+
+Standardized Output
+- Producing an output that adheres to an industry standard such as JSON for others to consume and manipulate is an important step in creating scripts.
+
+---
+
+### Instructions
 Use [Star Wars API](https://www.swapi.co)
 - API Request - Pull all starships from a specific film.
 - Data Types - Create your own data objects to load API values in to.
