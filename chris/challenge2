@@ -1,0 +1,28 @@
+import requests
+import json
+
+film = json.loads(requests.get("https://swapi.co/api/films/1/?format=json").text)
+
+print('{ \"film\" : {\n\"name\" : \"'+film['title']+'\",\n\t\"starships\" : {')
+for starship in film['starships']:
+    starshipURL = json.loads(requests.get(starship).text)
+    s = 0
+    if starshipURL['pilots']:
+        if s !=0:
+            print('\"starships\" : {\n\t\t\"name\" : \"')
+            s = s+1
+        print('\n\t\t\"name\" : \"'+starshipURL['name']+'\",')
+        print('\t\t\"pilots\" : [\n\t\t\t{')
+        c = 0
+        for pilot in starshipURL['pilots']:
+            c = c+1
+            pilotURL = json.loads(requests.get(pilot).text)
+            print('\t\t\t\t\"name\" : "'+pilotURL['name']+'\"\n\t\t\t}'),
+            if c < len(starshipURL['pilots']):
+                print(',\n\t\t\t{')
+            elif c == 1:
+                print('\n\t\t\t]')
+            else:
+                print('\n\t\t\t],')
+print('\t}')
+print('}')
