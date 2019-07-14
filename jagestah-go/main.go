@@ -1,4 +1,4 @@
-// User provides film number via CLI or Env Variable
+// User provides film number via CLI arg
 // Pull that film number from SWAPI
 // Pull all Ships in that Film
 // Pull all Pilots of those Ships
@@ -13,49 +13,86 @@ import (
 	"fmt"
   "encoding/json"
   "os"
-  // "strconv"
   "net/http"
   "io/ioutil"
-
 )
 
-var filmDeets map[string][]string
+type filmStruct struct {
+	Title string
+	Episode_id int
+	Opening_crawl string
+	Director string
+	Producer string
+	Release_date string
+	Characters []string
+	Planets []string
+	Starships []string
+	Vehicles []string
+	Species []string
+	Created string
+	Edited string
+	Url string
+}
+
+type shipStruct struct {
+	Name string
+	Model string
+	Manufacturer string
+	Cost_in_credits string
+	Length string
+	Max_atmosphering_speed string
+	Crew string
+	Passengers string
+	Cargo_capacity string
+	Consumables string
+	Hyperdrive_rating string
+	Mglt string
+	Starship_class string
+	Pilots []string
+	Films []string
+	Created string
+	Edited string
+	Url string
+}
 
 func main() {
-  filmOutput := getFilmDeets(os.Args[1])
-  for _, value := range filmOutput["starships"] {
-    fmt.Println(value)
-    fmt.Println(swapiRequest(value))
+	var filmOutput filmStruct
+  filmOutput = getFilmDeets(os.Args[1])
+	fmt.Println("Film Title:",filmOutput.Title)
+  for key, value := range filmOutput.Starships {
+    shipOutput := getShipDeets(value)
+		shipKey := (key + 1)
+		// fmt.Println(shipKey, value)
+		fmt.Printf("Ship number %d is %s\n", shipKey, shipOutput.Name)
+		// fmt.Println(s)
   }
 }
 
-func getFilmDeets(filmID string) (filmDeets map[string][]string){
+func getFilmDeets(filmID string) (filmDeets filmStruct){
   filmUrl := fmt.Sprintf("https://swapi.co/api/films/%s/", filmID)
-  fmt.Println("Gathering details from:", filmUrl)
-  // fmt.Println(filmUrl)
-  filmDeets = swapiRequest(filmUrl)
-  // httpReq, _ := http.NewRequest("GET", filmUrl, nil)
-  // res, _ := http.DefaultClient.Do(httpReq)
-  // body, _ := ioutil.ReadAll(res.Body)
-  // json.Unmarshal(body, &filmDeets)
-  // fmt.Println(filmDeets)
+  filmRequest := swapiRequest(filmUrl)
+	// fmt.Println(filmRequest)
+	json.Unmarshal(filmRequest, &filmDeets)
+	// fmt.Println(filmDeets)
   return filmDeets
 }
-func swapiRequest(requestUrl string) (requestResults map[string][]string) {
+
+func getShipDeets(shipUrl string) (shipDeets shipStruct) {
+	shipRequest := swapiRequest(shipUrl)
+	json.Unmarshal(shipRequest, &shipDeets)
+  return shipDeets
+}
+
+func swapiRequest(requestUrl string) (requestResults []uint8) {
+	fmt.Println("Gathering details from:", requestUrl)
   httpReq, err := http.NewRequest("GET", requestUrl, nil)
   errorHandle(err)
   res, err := http.DefaultClient.Do(httpReq)
   errorHandle(err)
-  body, err := ioutil.ReadAll(res.Body)
+  requestResults, err = ioutil.ReadAll(res.Body)
   errorHandle(err)
-  json.Unmarshal(body, &requestResults)
   return requestResults
 }
-
-func getShipDeets(shipUrl string) (shipDeets map[string]string) {
-  return
-}
-
 
 func errorHandle (err error) {
   if err != nil {
